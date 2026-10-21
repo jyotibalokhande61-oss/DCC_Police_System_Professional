@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}CivicShield | Complaint & Case Assistance{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-line"></span> DISTRIBUTED CLOUD COMPUTING PROJECT</div>
+    <h1>A clearer path from <span>complaint</span> to action.</h1>
+    <p class="hero-lede">A secure academic prototype for complaint submission, case-status visibility, authorized FIR record management, and consent-based location assistance.</p>
+    <div class="hero-actions">
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Open dashboard <span>→</span></a>
+      {% else %}
+        <a class="btn btn-primary" href="{{ url_for('register') }}">Get started <span>→</span></a>
+        <a class="btn btn-secondary" href="{{ url_for('login') }}">Sign in</a>
+      {% endif %}
+    </div>
+    <div class="trust-line"><span class="mini-shield">✓</span> Role-based access concept <span class="trust-separator">·</span> Permission-based location</div>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
+    <div class="visual-core"><div class="core-symbol">✦</div><span>CONNECTED<br>CASE SERVICES</span></div>
+    <div class="floating-card floating-top"><span class="float-icon">⌖</span><span><strong>Location assistance</strong><small>Shared with permission</small></span><span class="live-pill">OPT-IN</span></div>
+    <div class="floating-card floating-bottom"><span class="float-icon float-blue">▤</span><span><strong>Case workflow</strong><small>Reference · Review · Update</small></span><span class="tiny-check">✓</span></div>
+    <div class="visual-caption">Distributed services · Connected workflows</div>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-heading"><div><div class="eyebrow">PLATFORM CAPABILITIES</div><h2>One workflow. Clearer visibility.</h2></div><p>Designed to demonstrate how distributed services can support a coordinated case-management process.</p></div>
+  <div class="feature-grid">
+    <article class="feature-card"><div class="feature-icon icon-amber">↗</div><div class="feature-kicker">01 / CITIZEN</div><h3>Complaint registration</h3><p>Submit a structured report and receive a unique demo reference for later status checks.</p><a href="{{ url_for('register') }}" class="text-link">Start a report <span>→</span></a></article>
+    <article class="feature-card"><div class="feature-icon icon-blue">⌖</div><div class="feature-kicker">02 / LOCATION</div><h3>Location assistance</h3><p>Share a current coordinate only after granting browser permission, or enter a location manually.</p><a href="{{ url_for('register') }}" class="text-link">Explore the portal <span>→</span></a></article>
+    <article class="feature-card"><div class="feature-icon icon-green">▤</div><div class="feature-kicker">03 / CASE RECORDS</div><h3>Complaint & FIR workflow</h3><p>Authorized demo officers can update case status and create clearly labelled sample FIR records.</p><a href="{{ url_for('login') }}" class="text-link">Officer sign in <span>→</span></a></article>
+  </div>
+</section>
+
+<section class="notice-panel">
+  <div class="notice-icon">i</div><div><strong>Important project notice</strong><p>This student-built prototype is not connected to a police department and cannot register an official FIR. In real use, FIR registration and access follow applicable law and authorized procedures. For emergencies, contact the appropriate local emergency service.</p></div>
+</section>
+{% endblock %}

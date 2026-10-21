@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}New complaint | CivicShield{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">{% endblock %}
+{% block content %}
+<div class="form-page-head"><a class="back-link" href="{{ url_for('dashboard') }}">← Back to dashboard</a><div class="eyebrow">CITIZEN PORTAL / NEW REPORT</div><h1>Submit a complaint</h1><p class="muted">Share the details you can provide. Location is optional and requires your permission.</p></div>
+<form method="post" class="complaint-layout">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <section class="form-card form-card-wide"><div class="form-section-head"><span class="step-number">01</span><div><h2>Incident details</h2><p>Describe what happened as clearly as possible.</p></div></div>
+    <div class="form-stack">
+      <label>Complaint title<input type="text" name="title" maxlength="180" required placeholder="Briefly describe the issue"></label>
+      <div class="field-grid"><label>Category<select name="category" required><option value="">Choose a category</option>{% for category in categories %}<option>{{ category }}</option>{% endfor %}</select></label><label>Incident date <span class="label-hint">Optional</span><input type="date" name="incident_date"></label></div>
+      <label>Description <span class="label-hint">At least 20 characters</span><textarea name="description" rows="6" minlength="20" required placeholder="Include relevant facts, dates, and details. Avoid speculation."></textarea></label>
+    </div>
+  </section>
+  <section class="form-card form-card-wide"><div class="form-section-head"><span class="step-number">02</span><div><h2>Incident location</h2><p>Share the incident location if it is relevant. This is not continuous tracking.</p></div></div>
+    <div class="location-consent"><span class="location-icon">⌖</span><div><strong>Location access is optional</strong><p>Your browser will ask permission. Coordinates are attached only to this complaint when you submit the form.</p></div></div>
+    <div class="location-actions"><button class="btn btn-secondary" id="locate-btn" type="button">Use my current location</button><span id="location-status" class="muted small-text" aria-live="polite">Location not shared.</span></div>
+    <div id="map" class="map-box" aria-label="Incident location map"></div>
+    <div class="field-grid"><label>Latitude<input id="latitude" name="latitude" inputmode="decimal" placeholder="Optional" readonly></label><label>Longitude<input id="longitude" name="longitude" inputmode="decimal" placeholder="Optional" readonly></label></div>
+    <label>Location description <span class="label-hint">Optional</span><input type="text" name="location_text" maxlength="255" placeholder="Area, landmark, or address"></label>
+    <p class="fine-print">If you deny browser permission, you can enter the location description manually. The map requires an internet connection.</p>
+  </section>
+  <div class="form-submit-row"><p class="fine-print">Submitting creates a demo complaint reference, not an official police report.</p><button class="btn btn-primary" type="submit">Submit complaint <span>→</span></button></div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/location.js') }}"></script>
+{% endblock %}

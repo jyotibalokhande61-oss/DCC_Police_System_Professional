@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10243a">
+  <title>{% block title %}CivicShield | Police Assistance{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="topline"><span class="status-dot"></span> Academic prototype · Not an official police website</div>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('home') }}">
+      <span class="brand-mark">CS</span>
+      <span><strong>CivicShield</strong><small>Distributed Police Assistance</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        {% if current_user.role == 'citizen' %}<a href="{{ url_for('new_complaint') }}">File complaint</a>{% endif %}
+        <span class="user-chip">{{ current_user.name }}</span>
+        <form class="inline-form" method="post" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-quiet btn-small" type="submit">Sign out</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('login') }}">Sign in</a>
+        <a class="btn btn-primary btn-small" href="{{ url_for('register') }}">Create account</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="page-shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div><strong>CivicShield</strong><p>Secure-by-design concept for distributed public-service workflows.</p></div>
+    <div class="footer-note">Do not submit real emergency details or sensitive personal data to this demo.</div>
+    <div>© {{ now_year }} · Student project</div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

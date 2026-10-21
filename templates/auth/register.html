@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Create account | CivicShield{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <div class="auth-aside"><div class="eyebrow">CITIZEN PORTAL</div><h1>Make your report easier to follow.</h1><p>Create a demo account to submit a complaint, keep its reference, and view updates shared through this prototype.</p><div class="auth-bullets"><span>✓ Track your own reports</span><span>✓ Add an optional incident location</span><span>✓ See clear status updates</span></div></div>
+  <section class="form-card"><div class="form-eyebrow">CREATE YOUR ACCOUNT</div><h2>Get started</h2><p class="muted">All fields are required unless marked optional.</p>
+    <form method="post" class="form-stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Full name<input type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Your full name"></label>
+      <label>Email address<input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label>
+      <label>Password <span class="label-hint">8+ characters</span><input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Create a strong password"></label>
+      <button class="btn btn-primary btn-full" type="submit">Create citizen account <span>→</span></button>
+    </form>
+    <p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p>
+    <p class="fine-print">This prototype is for academic testing. Do not use real sensitive case details.</p>
+  </section>
+</div>
+{% endblock %}

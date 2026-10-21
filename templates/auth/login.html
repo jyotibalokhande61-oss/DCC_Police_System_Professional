@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Sign in | CivicShield{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <div class="auth-aside"><div class="eyebrow">SECURE WORKSPACE</div><h1>Welcome back.</h1><p>Sign in to view your reports or access the authorized officer workspace.</p><div class="auth-aside-stat"><span class="stat-mark">CS</span><div><strong>One connected workflow</strong><small>Citizen reports · Officer review · Case updates</small></div></div></div>
+  <section class="form-card"><div class="form-eyebrow">ACCOUNT ACCESS</div><h2>Sign in to CivicShield</h2><p class="muted">Use the account you created for this demo.</p>
+    <form method="post" class="form-stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Email address<input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required placeholder="Enter your password"></label>
+      <button class="btn btn-primary btn-full" type="submit">Sign in <span>→</span></button>
+    </form>
+    <p class="form-foot">New to the portal? <a href="{{ url_for('register') }}">Create a citizen account</a></p>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard | CivicShield{% endblock %}
+{% block content %}
+<section class="dashboard-head">
+  <div>
+    <div class="eyebrow">CITIZEN WORKSPACE</div>
+    <h1>Welcome, {{ current_user.name.split(' ')[0] }}.</h1>
+    <p class="muted">Keep track of your reports and review the latest status updates.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('new_complaint') }}">＋ Submit a complaint</a>
+</section>
+<section class="stat-grid">
+  <div class="stat-card"><span>Your reports</span><strong>{{ counts.total }}</strong><small>All submitted complaints</small></div>
+  <div class="stat-card"><span>Submitted</span><strong>{{ counts.pending }}</strong><small>Awaiting review</small></div>
+  <div class="stat-card"><span>Under review</span><strong>{{ counts.in_progress }}</strong><small>Being reviewed</small></div>
+  <div class="stat-card"><span>Resolved</span><strong>{{ counts.resolved }}</strong><small>Marked resolved</small></div>
+</section>
+<section class="table-card">
+  <div class="table-head"><div><h2>Your complaint history</h2><p>Only reports submitted by your account are shown here.</p></div><span class="record-count">{{ complaints|length }} record(s)</span></div>
+  {% if complaints %}
+  <div class="table-scroll"><table><thead><tr><th>Reference</th><th>Complaint</th><th>Category</th><th>Status</th><th>Submitted</th><th></th></tr></thead><tbody>
+  {% for c in complaints %}
+    <tr><td><span class="reference">{{ c.reference or ('DCC-' ~ c.id) }}</span></td><td><strong>{{ c.title }}</strong></td><td>{{ c.category }}</td><td><span class="status status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td><td>{{ c.created_at.strftime('%d %b %Y') }}</td><td><a class="row-link" href="{{ url_for('complaint_detail', complaint_id=c.id) }}">View details →</a></td></tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon">▤</div><h3>Your dashboard is ready</h3><p>When you submit a complaint, its reference and status will appear here.</p><a class="btn btn-primary" href="{{ url_for('new_complaint') }}">Create your first report</a></div>
+  {% endif %}
+</section>
+<section class="notice-panel"><div class="notice-icon">i</div><div><strong>Privacy and safety</strong><p>Only share location details you choose to provide. This student prototype is not an official police portal and should not be used for emergencies or real sensitive case records.</p></div></section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | CivicShield{% endblock %}
+{% block content %}
+<section class="dashboard-head">
+  <div><div class="eyebrow">{{ 'OFFICER WORKSPACE' if current_user.role in ['officer','admin'] else 'CITIZEN WORKSPACE' }}</div><h1>{{ 'Case operations' if current_user.role in ['officer','admin'] else 'Your reports' }}</h1><p class="muted">{{ 'Review submitted complaints and manage demonstration case records.' if current_user.role in ['officer','admin'] else 'View your complaint references and any status updates.' }}</p></div>
+  {% if current_user.role == 'citizen' %}<a class="btn btn-primary" href="{{ url_for('new_complaint') }}">＋ New complaint</a>{% endif %}
+</section>
+<section class="stat-grid">
+  <div class="stat-card"><span>Total reports</span><strong>{{ counts.total }}</strong><small>All visible records</small></div>
+  <div class="stat-card"><span>Submitted</span><strong>{{ counts.pending }}</strong><small>Awaiting review</small></div>
+  <div class="stat-card"><span>Under review</span><strong>{{ counts.in_progress }}</strong><small>Being reviewed</small></div>
+  <div class="stat-card"><span>Resolved</span><strong>{{ counts.resolved }}</strong><small>Marked resolved</small></div>
+</section>
+<section class="table-card">
+  <div class="table-head"><div><h2>{{ 'Complaint queue' if current_user.role in ['officer','admin'] else 'Complaint history' }}</h2><p>Latest records first</p></div><span class="record-count">{{ complaints|length }} record(s)</span></div>
+  {% if complaints %}
+  <div class="table-scroll"><table><thead><tr><th>Reference</th><th>Complaint</th><th>Category</th>{% if current_user.role in ['officer','admin'] %}<th>Submitted by</th>{% endif %}<th>Status</th><th>Date</th><th></th></tr></thead><tbody>
+  {% for c in complaints %}<tr><td><span class="reference">{{ c.reference or ('DCC-' ~ c.id) }}</span></td><td><strong>{{ c.title }}</strong></td><td>{{ c.category }}</td>{% if current_user.role in ['officer','admin'] %}<td>{{ c.citizen.name }}</td>{% endif %}<td><span class="status status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td><td>{{ c.created_at.strftime('%d %b %Y') }}</td><td><a class="row-link" href="{{ url_for('complaint_detail', complaint_id=c.id) }}">Open →</a></td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state"><div class="empty-icon">▤</div><h3>No reports yet</h3><p>Your complaint records will appear here after submission.</p>{% if current_user.role == 'citizen' %}<a class="btn btn-primary" href="{{ url_for('new_complaint') }}">Submit your first complaint</a>{% endif %}</div>{% endif %}
+</section>
+{% endblock %}
